@@ -1,0 +1,36 @@
+var gulp = require('gulp'),
+    sass = require('gulp-ruby-sass')
+    livereload = require('gulp-livereload');
+    connect = require('gulp-connect');
+
+gulp.task('watch', function() {
+    console.log ('watching')
+    livereload.listen();
+    gulp.watch('*.scss', ['scss']);
+});
+
+gulp.task('connect', function() {
+    console.log ('connecting')
+    connect.server({
+        root: 'app',
+        port:63342,
+        livereload: true
+    });
+});
+
+gulp.task('html', function () {
+    gulp.src('index.html')
+        .pipe(connect.reload());
+});
+
+gulp.task("scss", function(){
+    console.log("Generate CSS files " + (new Date()).toString());
+
+    sass('mystyles.scss', { style: 'expanded' })
+        .pipe(gulp.dest('css'));
+});
+
+gulp.task("default",['connect','watch','scss','html'])
+
+
+
